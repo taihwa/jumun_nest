@@ -19,26 +19,22 @@ import { ResponseStoreDto } from './dto/responseStore.dto';
 export class StoreController {
   constructor(private storeService: StoreService) {}
 
-  @Public()
   @Post('/create')
   async createStore(@Body() createStoreDto: CreateStoreDto) {
     return await this.storeService.createStore(createStoreDto);
   }
 
-  @Public()
   @Get('/findAll')
   async findAllStore() {
     const stores = await this.storeService.findAllStore();
     return stores;
   }
 
-  @Public()
   @Get('/:storeId')
   async findOneStore(@Param('storeId', ParseIntPipe) storeId: number) {
     return await this.storeService.findStore(storeId);
   }
 
-  @Public()
   @Put('/:id')
   async updateStore(
     @Param('id', ParseIntPipe) id: number,
@@ -47,7 +43,6 @@ export class StoreController {
     return await this.storeService.updateStore(id, updateStoreDto);
   }
 
-  @Public()
   @Delete(':id')
   async removeStore(@Param('id', ParseIntPipe) id: number): Promise<void> {
     const result = await this.storeService.removeStore(id);

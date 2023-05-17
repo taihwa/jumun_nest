@@ -13,7 +13,7 @@ import { SignInDto } from './dto/sign-in.dto';
 import { AuthGuard } from './auth.guard';
 import { Public } from './decorator/public.decorator';
 
-@Controller('auth')
+@Controller('api/auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
@@ -25,9 +25,15 @@ export class AuthController {
   }
 
   @UseGuards(AuthGuard)
-  @Get('profile')
+  @Post('/profile')
   getProfile(@Request() req) {
     return req.user;
+  }
+
+  @UseGuards(AuthGuard)
+  @Post('/authCheck')
+  checkAuth() {
+    return 'OK';
   }
 
   @Public()
