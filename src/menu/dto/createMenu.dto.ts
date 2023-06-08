@@ -1,6 +1,8 @@
 import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class CreateMenuDto {
+  menu_seq: number;
+
   @IsNotEmpty()
   @IsString()
   menu_name: string;
@@ -14,4 +16,7 @@ export class CreateMenuDto {
 
   @IsNotEmpty()
   store_seq: number;
+
+  crtUser: string;
+  udtUser: string;
 }

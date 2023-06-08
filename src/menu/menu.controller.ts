@@ -11,15 +11,17 @@ import { MenuService } from './menu.service';
 import { CreateMenuDto } from './dto/createMenu.dto';
 import { UpdateMenuDto } from './dto/updateMenu.dto';
 
-@Controller('menu')
+@Controller('api/menu')
 export class MenuController {
   constructor(private menuService: MenuService) {}
-  @Post()
-  create(@Body() createMenuDto: CreateMenuDto) {
+
+  @Post('/createMenu')
+  create(@Body() createMenuDto: CreateMenuDto[]) {
+    console.log(createMenuDto);
     return this.menuService.create(createMenuDto);
   }
 
-  @Get()
+  @Get('/findAll')
   findAll() {
     return this.menuService.findAll();
   }

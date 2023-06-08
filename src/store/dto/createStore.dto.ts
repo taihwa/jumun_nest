@@ -13,6 +13,8 @@ export class CreateStoreDto {
 
   storeTel: string;
 
+  storeImg: string;
+
   @IsNotEmpty()
   @IsString()
   crtUser: string;

@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  NotFoundException,
+  forwardRef,
+} from '@nestjs/common';
 import { CreateMenuDto } from './dto/createMenu.dto';
 import { UpdateMenuDto } from './dto/updateMenu.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -6,25 +11,38 @@ import { Menu } from './menu.entity';
 import { FindOneOptions, Repository } from 'typeorm';
 import { plainToClass } from 'class-transformer';
 import { MenuDto } from './dto/menu.dto';
+import { Store } from 'src/store/store.entity';
+import { StoreService } from 'src/store/store.service';
 
 @Injectable()
 export class MenuService {
   constructor(
+    private storeService: StoreService,
     @InjectRepository(Menu)
     private readonly menuRepository: Repository<Menu>,
   ) {}
-  async create(createMenuDto: CreateMenuDto) {
-    const { menu_name, menu_price, menu_etc, store_seq } = createMenuDto;
-    await this.menuRepository.save({
-      menu_name,
-      menu_price,
-      menu_etc,
-      store_seq,
-    });
+
+  async create(createMenuDto: CreateMenuDto[]) {
+    const store = await this.storeService.findStore(createMenuDto[0].store_seq);
+    const menus: Menu[] = [];
+    for (let i = 0; i < createMenuDto.length; i++) {
+      const element = createMenuDto[i];
+      const menu = new Menu();
+      menu.store = store;
+      menu.menu_seq = element.menu_seq;
+      menu.menu_name = element.menu_name;
+      menu.menu_price = element.menu_price;
+      menu.menu_etc = element.menu_etc;
+      menu.crtUser = element.crtUser;
+      menu.udtUser = element.udtUser;
+      menus.push(menu);
+    }
+    await this.menuRepository.save(menus);
   }
   async findAll() {
-    await this.menuRepository.find();
+    return await this.menuRepository.find();
   }
+
   async findOne(seq: number) {
     const options: FindOneOptions<Menu> = {
       where: {

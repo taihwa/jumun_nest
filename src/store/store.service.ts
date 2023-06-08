@@ -18,15 +18,21 @@ export class StoreService {
   ) {}
 
   async createStore(createStoreDto: CreateStoreDto) {
-    const { storeName, storeCategory, storeAddress, storeTel, crtUser } =
-      createStoreDto;
+    const {
+      storeName,
+      storeCategory,
+      storeAddress,
+      storeTel,
+      storeImg,
+      crtUser,
+    } = createStoreDto;
     return await this.storeRepository.save({
       store_name: storeName,
       store_category: storeCategory,
       store_address: storeAddress,
       store_tel: storeTel,
-      crtUser,
-      udtUser: crtUser,
+      store_img: storeImg,
+      crtUser: crtUser,
     });
   }
 
@@ -38,6 +44,9 @@ export class StoreService {
     const options: FindOneOptions<Store> = {
       where: {
         store_seq: storeId,
+      },
+      relations: {
+        menus: true,
       },
     };
     return await this.storeRepository.findOne(options);

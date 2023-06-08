@@ -25,6 +25,17 @@ export class Store {
   @Column({ type: 'varchar', length: 20, nullable: true })
   store_tel: string;
 
+  @Column({
+    transformer: {
+      to: (value: string) => {
+        return Buffer.from(value);
+      },
+      from: (value: Buffer) => value.toString(),
+    },
+    type: 'longblob',
+  })
+  store_img?: string;
+
   @OneToMany(() => Menu, (menu) => menu.store, { lazy: true })
   menus: Promise<Menu[]>;
 
@@ -35,8 +46,8 @@ export class Store {
   udtDate: Date;
 
   @Column({ type: 'varchar', length: 20 })
-  crtUser: string;
+  crtUser?: string;
 
   @Column({ type: 'varchar', length: 20 })
-  udtUser: string;
+  udtUser?: string;
 }
