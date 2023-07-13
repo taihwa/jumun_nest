@@ -6,6 +6,7 @@ import { AuthModule } from './auth/auth.module';
 import { StoreModule } from './store/store.module';
 import { MenuModule } from './menu/menu.module';
 import { MulterModule } from '@nestjs/platform-express';
+import { ChatroomModule } from './chatroom/chatroom.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot(dbConfig),
@@ -18,6 +19,7 @@ import { MulterModule } from '@nestjs/platform-express';
         fileSize: 1024 * 1024 * 500,
       },
     }),
+    ChatroomModule,
   ],
 })
 export class AppModule {}
